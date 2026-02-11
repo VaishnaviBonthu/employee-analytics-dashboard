@@ -1,9 +1,21 @@
 import streamlit as st
 import pandas as pd
-from snowflake.snowpark.context import get_active_session
+import streamlit as st
+from snowflake.snowpark import Session
 
-# Get Snowflake session (already provided internally)
-session = get_active_session()
+# Create Snowflake session using Streamlit secrets
+connection_parameters = {
+    "account": st.secrets["snowflake"]["account"],
+    "user": st.secrets["snowflake"]["user"],
+    "password": st.secrets["snowflake"]["password"],
+    "role": st.secrets["snowflake"]["role"],
+    "warehouse": st.secrets["snowflake"]["warehouse"],
+    "database": st.secrets["snowflake"]["database"],
+    "schema": st.secrets["snowflake"]["schema"],
+}
+
+session = Session.builder.configs(connection_parameters).create()
+
 
 st.title("Employee Analytics Dashboard")
 
